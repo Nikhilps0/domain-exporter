@@ -1,0 +1,39 @@
+# Binaries
+domain-exporter
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go
+*.test
+*.out
+coverage.out
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local Config
+config.local.yaml
+
+# Vendor
+vendor/
+
+# Build
+dist/
+build/
+
+# Docker
+*.tar
+
+# Environment
+.env
