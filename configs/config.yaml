@@ -1,7 +1,0 @@
-server_port: 8080
-
-refresh_interval: 6h
-
-domains:
-  - google.com
-  - github.com
