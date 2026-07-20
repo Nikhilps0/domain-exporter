@@ -1,0 +1,32 @@
+server:
+  listen_address: ":9118"
+
+scheduler:
+  # How often all domains are refreshed
+  refresh_interval: 6h
+
+  # Number of concurrent workers
+  worker_count: 5
+
+  # Timeout for each RDAP/TLS request
+  request_timeout: 10s
+
+rdap:
+  # IANA RDAP bootstrap
+  bootstrap_url: "https://data.iana.org/rdap/dns.json"
+
+  # Retry count for failed requests
+  max_retries: 3
+
+tls:
+  enabled: true
+  port: 443
+
+domains:
+  - name: google.com
+  - name: github.com
+  - name: openai.com
+  - name: api.ai
+  - name: example.dev
+  - name: example.app
+  - name: example.io
