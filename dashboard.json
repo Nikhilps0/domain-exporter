@@ -695,8 +695,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "yellow",
@@ -810,8 +809,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -868,8 +866,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "green",
@@ -941,8 +938,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1003,8 +999,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "green",
@@ -1076,8 +1071,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -1142,8 +1136,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -1222,8 +1215,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -1317,8 +1309,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -1418,8 +1409,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1528,8 +1518,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1618,8 +1607,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1687,8 +1675,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "green",
@@ -1746,11 +1733,10 @@
           },
           "mappings": [],
           "thresholds": {
-           mode": "absolute",
+            "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -1811,9 +1797,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-          },
+                "color": "green"
+              },
               {
                 "color": "red",
                 "value": 80
@@ -1860,7 +1845,7 @@
     },
     {
       "collapsed": false,
-      "gdPos": {
+      "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
@@ -1884,7 +1869,7 @@
           "mappings": [
             {
               "options": {
-              "match": "null+nan",
+                "match": "null+nan",
                 "result": {
                   "index": 0,
                   "text": "0"
@@ -1897,8 +1882,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1950,7 +1934,7 @@
       },
       "description": "Domains approaching expiration",
       "fieldConfig": {
-        "defaults"{
+        "defaults": {
           "color": {
             "mode": "thresholds"
           },
@@ -1970,8 +1954,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -2019,7 +2002,7 @@
     {
       "datasource": {
         "type": "prometheus",
-      "uid": "${DS_PROMETHEUS}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Domains with long validity",
       "fieldConfig": {
@@ -2043,8 +2026,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -2106,9 +2088,8 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-            {
-                "color": "red",
-                "value": null
+              {
+                "color": "red"
               },
               {
                 "color": "yellow",
@@ -2175,7 +2156,7 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Color badomain expiration risk",
+      "description": "Color based domain expiration risk",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2186,8 +2167,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -2263,8 +2243,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -2334,7 +2313,7 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Average remainiomain validity",
+      "description": "Average remaining domain validity",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2377,8 +2356,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2438,7 +2416,8 @@
         "y": 132
       },
       "id": 38,
-      "title": "📡 EXPORTER MONITORING     "type": "row"
+      "title": "📡 EXPORTER MONITORING",
+      "type": "row"
     },
     {
       "datasource": {
@@ -2467,8 +2446,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2529,8 +2507,7 @@
             "mode": "absolute",
             "steps": [
               {
-              "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2577,7 +2554,7 @@
     },
     {
       "datasource": {
-        ype": "prometheus",
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Exporter memory consumption",
@@ -2591,8 +2568,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2643,7 +2619,8 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Prometheus scrape health"      "fieldConfig": {
+      "description": "Prometheus scrape health",
+      "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
@@ -2685,8 +2662,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2726,7 +2702,7 @@
       "title": "📈 SCRAPE PERFORMANCE",
       "type": "timeseries"
     },
-   
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -2750,7 +2726,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-          "hideFrom": {
+            "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
@@ -2815,7 +2791,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode "palette-classic"
+            "mode": "palette-classic"
           },
           "custom": {
             "hideFrom": {
@@ -2889,7 +2865,7 @@
         },
         "hide": 0,
         "includeAll": false,
-      "label": "Prometheus",
+        "label": "Prometheus",
         "multi": false,
         "name": "DS_PROMETHEUS",
         "options": [],
