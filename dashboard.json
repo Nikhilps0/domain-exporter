@@ -1465,7 +1465,7 @@
           "options": {
             "excludeByName": {
               "Time": true,
-              "__ne__": true,
+              "__name__": true,
               "instance": true,
               "job": true
             },
@@ -1675,7 +1675,7 @@
             {
               "options": {
                 "match": "null+nan",
-              "result": {
+                "result": {
                   "index": 1,
                   "text": "0"
                 }
@@ -1742,11 +1742,11 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "threshol"
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+           mode": "absolute",
             "steps": [
               {
                 "color": "green",
@@ -1810,10 +1810,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-          {
+              {
                 "color": "green",
                 "value": null
-              },
+          },
               {
                 "color": "red",
                 "value": 80
@@ -1855,12 +1855,12 @@
           "refId": "A"
         }
       ],
-      "title": "📡 EXPORTERAST RUN",
+      "title": "📡 EXPORTER LAST RUN",
       "type": "stat"
     },
     {
       "collapsed": false,
-      "gridPos": {
+      "gdPos": {
         "h": 1,
         "w": 24,
         "x": 0,
@@ -1880,11 +1880,11 @@
         "defaults": {
           "color": {
             "mode": "thresholds"
-        },
+          },
           "mappings": [
             {
               "options": {
-                "match": "null+nan",
+              "match": "null+nan",
                 "result": {
                   "index": 0,
                   "text": "0"
@@ -1948,9 +1948,9 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "descripti": "Domains approaching expiration",
+      "description": "Domains approaching expiration",
       "fieldConfig": {
-        "defaults": {
+        "defaults"{
           "color": {
             "mode": "thresholds"
           },
@@ -2014,12 +2014,12 @@
         }
       ],
       "title": "🟠 DOMAINS (<60 DAYS)",
-      "typ: "stat"
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+      "uid": "${DS_PROMETHEUS}"
       },
       "description": "Domains with long validity",
       "fieldConfig": {
@@ -2103,10 +2103,10 @@
           "mappings": [],
           "max": 100,
           "min": 0,
-          hresholds": {
+          "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
+            {
                 "color": "red",
                 "value": null
               },
@@ -2172,10 +2172,10 @@
     },
     {
       "datasource": {
-        "type": "promet",
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Color based domain expiration risk",
+      "description": "Color badomain expiration risk",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2260,10 +2260,10 @@
           },
           "mappings": [],
           "thresholds": {
-            "de": "absolute",
+            "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color "red",
                 "value": null
               },
               {
@@ -2332,9 +2332,9 @@
     {
       "datasource": {
         "type": "prometheus",
-    "uid": "${DS_PROMETHEUS}"
+        "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Average remaining domain validity",
+      "description": "Average remainiomain validity",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2435,11 +2435,10 @@
         "h": 1,
         "w": 24,
         "x": 0,
-      "y": 132
+        "y": 132
       },
       "id": 38,
-      "title": "📡 EXPORTER MONITORING",
-      "type": "row"
+      "title": "📡 EXPORTER MONITORING     "type": "row"
     },
     {
       "datasource": {
@@ -2457,7 +2456,7 @@
                   "text": "DOWN"
                 },
                 "1": {
-                "color": "green",
+                  "color": "green",
                   "text": "UP"
                 }
               },
@@ -2526,11 +2525,11 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "threshold: {
+          "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+              "color": "green",
                 "value": null
               },
               {
@@ -2573,12 +2572,12 @@
           "refId": "A"
         }
       ],
-      "title": "ðO ROUTINES",
+      "title": "🧵 GO ROUTINES",
       "type": "stat"
     },
     {
       "datasource": {
-        "type": "prometheus",
+        ype": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "Exporter memory consumption",
@@ -2642,10 +2641,9 @@
     {
       "datasource": {
         "type": "prometheus",
-        "u": "${DS_PROMETHEUS}"
+        "uid": "${DS_PROMETHEUS}"
       },
-      "description": "Prometheus scrape health",
-      "fieldConfig": {
+      "description": "Prometheus scrape health"      "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
@@ -2728,7 +2726,7 @@
       "title": "📈 SCRAPE PERFORMANCE",
       "type": "timeseries"
     },
-    {
+   
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -2748,10 +2746,11 @@
       "description": "Domains grouped by expiry risk",
       "fieldConfig": {
         "defaults": {
-          "color": {         "mode": "palette-classic"
+          "color": {
+            "mode": "palette-classic"
           },
           "custom": {
-            "hideFrom": {
+          "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
@@ -2813,10 +2812,10 @@
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "TLS certificate health",
-    "fieldConfig": {
+      "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode "palette-classic"
           },
           "custom": {
             "hideFrom": {
@@ -2886,11 +2885,11 @@
         "current": {
           "selected": false,
           "text": "prometheus",
-          "value": "qvfh9pyj6yof"
+          "value": "afqvfh9pyj6yof"
         },
         "hide": 0,
         "includeAll": false,
-        "label": "Prometheus",
+      "label": "Prometheus",
         "multi": false,
         "name": "DS_PROMETHEUS",
         "options": [],
