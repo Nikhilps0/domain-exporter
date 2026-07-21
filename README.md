@@ -161,3 +161,17 @@ scrape_configs:
 - [ ] Integration tests
 
 ---
+
+## Grafana Dashboard
+
+Example:
+
+<img width="1887" height="706" alt="image" src="https://github.com/user-attachments/assets/dbb4f00c-b9ca-4e71-ac22-a98c85059868" />
+
+<img width="938" height="281" alt="image" src="https://github.com/user-attachments/assets/71e786e7-e026-4577-8772-45455318147c" />
+
+<img width="1877" height="725" alt="image" src="https://github.com/user-attachments/assets/a1157fa4-fda2-4f99-9d96-7cfbf3ae79e2" />
+
+<img width="1871" height="757" alt="image" src="https://github.com/user-attachments/assets/f397a226-2a6d-4301-9418-442abc6725af" />
+
+You can upload  dashboard.json file to Grafana
