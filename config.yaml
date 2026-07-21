@@ -23,4 +23,8 @@ tls:
   port: 443
 
 domains:
-  - name: topshelfinc.us
+  - name: facebook.com
+  - name: google.com
+  - name: youtube.com
+  - name: instagram.com
+
