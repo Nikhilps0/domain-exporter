@@ -7,30 +7,50 @@ import (
 )
 
 type Metrics struct {
+	mutex sync.RWMutex
+
+	// -----------------------------
+	// Domain Expiration
+	// -----------------------------
+
 	DaysUntilExpiry *prometheus.GaugeVec
 	ExpiryTimestamp *prometheus.GaugeVec
+	LastRefresh     *prometheus.GaugeVec
 
-	RDAPSuccess  *prometheus.GaugeVec
-	RDAPDuration *prometheus.GaugeVec
+	// -----------------------------
+	// Lookup
+	// -----------------------------
 
-	TLSSuccess     *prometheus.GaugeVec
-	TLSDuration    *prometheus.GaugeVec
-	TLSExpiry      *prometheus.GaugeVec
-	TLSDaysRemain  *prometheus.GaugeVec
+	RDAPSuccess      *prometheus.GaugeVec
+	RDAPDuration     *prometheus.GaugeVec
+	WHOISSuccess     *prometheus.GaugeVec
+	WHOISDuration    *prometheus.GaugeVec
+	LookupMethod     *prometheus.GaugeVec
+
+	// -----------------------------
+	// TLS
+	// -----------------------------
+
+	TLSSuccess      *prometheus.GaugeVec
+	TLSDuration     *prometheus.GaugeVec
+	TLSExpiry       *prometheus.GaugeVec
+	TLSDaysRemain   *prometheus.GaugeVec
+
+	// -----------------------------
+	// DNSSEC
+	// -----------------------------
 
 	DNSSECEnabled *prometheus.GaugeVec
-
-	LastRefresh *prometheus.GaugeVec
-
-	mutex sync.RWMutex
 }
 
 func NewMetrics() *Metrics {
+
 	m := &Metrics{
+
 		DaysUntilExpiry: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_days_until_expiry",
-				Help: "Days remaining until domain expiration.",
+				Help: "Days until domain expiration.",
 			},
 			[]string{"domain"},
 		),
@@ -38,7 +58,15 @@ func NewMetrics() *Metrics {
 		ExpiryTimestamp: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_expiration_timestamp",
-				Help: "Unix timestamp of domain expiration.",
+				Help: "Domain expiration timestamp.",
+			},
+			[]string{"domain"},
+		),
+
+		LastRefresh: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "domain_last_refresh",
+				Help: "Last refresh unix timestamp.",
 			},
 			[]string{"domain"},
 		),
@@ -46,7 +74,7 @@ func NewMetrics() *Metrics {
 		RDAPSuccess: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_rdap_success",
-				Help: "RDAP lookup success (1=success,0=failure).",
+				Help: "RDAP lookup success.",
 			},
 			[]string{"domain"},
 		),
@@ -54,7 +82,31 @@ func NewMetrics() *Metrics {
 		RDAPDuration: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_rdap_response_seconds",
-				Help: "RDAP lookup duration in seconds.",
+				Help: "RDAP lookup duration.",
+			},
+			[]string{"domain"},
+		),
+
+		WHOISSuccess: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "domain_whois_success",
+				Help: "WHOIS lookup success.",
+			},
+			[]string{"domain"},
+		),
+
+		WHOISDuration: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "domain_whois_response_seconds",
+				Help: "WHOIS lookup duration.",
+			},
+			[]string{"domain"},
+		),
+
+		LookupMethod: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Name: "domain_lookup_method",
+				Help: "0=RDAP 1=WHOIS",
 			},
 			[]string{"domain"},
 		),
@@ -62,7 +114,7 @@ func NewMetrics() *Metrics {
 		TLSSuccess: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_tls_lookup_success",
-				Help: "TLS lookup success (1=success,0=failure).",
+				Help: "TLS lookup success.",
 			},
 			[]string{"domain"},
 		),
@@ -70,7 +122,7 @@ func NewMetrics() *Metrics {
 		TLSDuration: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_tls_response_seconds",
-				Help: "TLS lookup duration in seconds.",
+				Help: "TLS lookup duration.",
 			},
 			[]string{"domain"},
 		),
@@ -94,15 +146,7 @@ func NewMetrics() *Metrics {
 		DNSSECEnabled: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "domain_dnssec_enabled",
-				Help: "DNSSEC enabled (1=yes,0=no).",
-			},
-			[]string{"domain"},
-		),
-
-		LastRefresh: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "domain_last_refresh",
-				Help: "Unix timestamp of the last successful refresh.",
+				Help: "DNSSEC enabled.",
 			},
 			[]string{"domain"},
 		),
@@ -111,50 +155,132 @@ func NewMetrics() *Metrics {
 	prometheus.MustRegister(
 		m.DaysUntilExpiry,
 		m.ExpiryTimestamp,
+		m.LastRefresh,
+
 		m.RDAPSuccess,
 		m.RDAPDuration,
+
+		m.WHOISSuccess,
+		m.WHOISDuration,
+		m.LookupMethod,
+
 		m.TLSSuccess,
 		m.TLSDuration,
 		m.TLSExpiry,
 		m.TLSDaysRemain,
+
 		m.DNSSECEnabled,
-		m.LastRefresh,
 	)
 
 	return m
 }
 
-func (m *Metrics) Update(result DomainResult) {
+func (m *Metrics) Update(r DomainResult) {
+
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
-	domain := result.Domain
+	domain := r.Domain
 
-	if result.RDAPSuccess {
+	// -----------------------------
+	// Expiration
+	// -----------------------------
+
+	if !r.ExpirationTime.IsZero() {
+
+		m.ExpiryTimestamp.
+			WithLabelValues(domain).
+			Set(float64(r.ExpirationTime.Unix()))
+
+		m.DaysUntilExpiry.
+			WithLabelValues(domain).
+			Set(float64(r.DaysUntilExpiry()))
+	}
+
+	m.LastRefresh.
+		WithLabelValues(domain).
+		Set(float64(r.CollectedAt.Unix()))
+
+	// -----------------------------
+	// RDAP
+	// -----------------------------
+
+	if r.RDAPSuccess {
 		m.RDAPSuccess.WithLabelValues(domain).Set(1)
-		m.DaysUntilExpiry.WithLabelValues(domain).Set(float64(result.DaysUntilExpiry()))
-		m.ExpiryTimestamp.WithLabelValues(domain).Set(float64(result.ExpirationTime.Unix()))
 	} else {
 		m.RDAPSuccess.WithLabelValues(domain).Set(0)
 	}
 
-	m.RDAPDuration.WithLabelValues(domain).Set(result.RDAPDuration.Seconds())
+	m.RDAPDuration.
+		WithLabelValues(domain).
+		Set(r.RDAPDuration.Seconds())
 
-	if result.TLSSuccess {
-		m.TLSSuccess.WithLabelValues(domain).Set(1)
-		m.TLSExpiry.WithLabelValues(domain).Set(float64(result.TLSExpiryTime.Unix()))
-		m.TLSDaysRemain.WithLabelValues(domain).Set(float64(result.TLSDaysRemaining))
+	// -----------------------------
+	// WHOIS
+	// -----------------------------
+
+	if r.WHOISSuccess {
+		m.WHOISSuccess.WithLabelValues(domain).Set(1)
 	} else {
-		m.TLSSuccess.WithLabelValues(domain).Set(0)
+		m.WHOISSuccess.WithLabelValues(domain).Set(0)
 	}
 
-	m.TLSDuration.WithLabelValues(domain).Set(result.TLSDuration.Seconds())
+	m.WHOISDuration.
+		WithLabelValues(domain).
+		Set(r.WHOISDuration.Seconds())
 
-	if result.DNSSECEnabled {
+	// -----------------------------
+	// Lookup Method
+	// -----------------------------
+
+	switch r.LookupMethod {
+
+	case "rdap":
+		m.LookupMethod.WithLabelValues(domain).Set(0)
+
+	case "whois":
+		m.LookupMethod.WithLabelValues(domain).Set(1)
+
+	default:
+		m.LookupMethod.WithLabelValues(domain).Set(-1)
+	}
+
+	// -----------------------------
+	// TLS
+	// -----------------------------
+
+	if r.TLSSuccess {
+
+		m.TLSSuccess.
+			WithLabelValues(domain).
+			Set(1)
+
+		m.TLSExpiry.
+			WithLabelValues(domain).
+			Set(float64(r.TLSExpiryTime.Unix()))
+
+		m.TLSDaysRemain.
+			WithLabelValues(domain).
+			Set(float64(r.TLSDaysRemaining))
+
+	} else {
+
+		m.TLSSuccess.
+			WithLabelValues(domain).
+			Set(0)
+	}
+
+	m.TLSDuration.
+		WithLabelValues(domain).
+		Set(r.TLSDuration.Seconds())
+
+	// -----------------------------
+	// DNSSEC
+	// -----------------------------
+
+	if r.DNSSECEnabled {
 		m.DNSSECEnabled.WithLabelValues(domain).Set(1)
 	} else {
 		m.DNSSECEnabled.WithLabelValues(domain).Set(0)
 	}
-
-	m.LastRefresh.WithLabelValues(domain).Set(float64(result.CollectedAt.Unix()))
 }

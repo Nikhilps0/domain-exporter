@@ -2,52 +2,67 @@ package collector
 
 import "time"
 
-// DomainResult contains the complete collection result for a single domain.
-// It is passed between the RDAP, TLS, DNSSEC collectors and finally used by
-// the metrics collector.
+// DomainResult contains all information collected for a domain.
 type DomainResult struct {
 	Domain string
 
 	CollectedAt time.Time
 
-	// -------------------------
-	// RDAP
-	// -------------------------
+	// ----------------------------------------------------
+	// Lookup
+	// ----------------------------------------------------
 
-	RDAPSuccess    bool
-	RDAPDuration   time.Duration
+	// "rdap" or "whois"
+	LookupMethod string
+
+	// ----------------------------------------------------
+	// RDAP
+	// ----------------------------------------------------
+
+	RDAPSuccess  bool
+	RDAPDuration time.Duration
+
+	// ----------------------------------------------------
+	// WHOIS
+	// ----------------------------------------------------
+
+	WHOISSuccess  bool
+	WHOISDuration time.Duration
+
+	// ----------------------------------------------------
+	// Expiration
+	// ----------------------------------------------------
+
 	ExpirationTime time.Time
 
-	// -------------------------
+	// ----------------------------------------------------
 	// TLS
-	// -------------------------
+	// ----------------------------------------------------
 
-	TLSSuccess       bool
-	TLSDuration      time.Duration
-	TLSExpiryTime    time.Time
+	TLSSuccess bool
+
+	TLSDuration time.Duration
+
+	TLSExpiryTime time.Time
+
 	TLSDaysRemaining int
 
-	// -------------------------
+	// ----------------------------------------------------
 	// DNSSEC
-	// -------------------------
+	// ----------------------------------------------------
 
 	DNSSECEnabled bool
 
-	// -------------------------
-	// Errors
-	// -------------------------
+	// ----------------------------------------------------
+	// Error
+	// ----------------------------------------------------
 
 	Error string
 }
 
-// DomainJob represents one domain scheduled for collection.
-type DomainJob struct {
-	Domain string
-}
-
-// DaysUntilExpiry returns the number of whole days remaining until the
-// domain expires. If the expiration date is unavailable, -1 is returned.
+// DaysUntilExpiry returns the remaining days until domain expiry.
 func (d DomainResult) DaysUntilExpiry() int {
+
 	if d.ExpirationTime.IsZero() {
 		return -1
 	}
@@ -55,8 +70,9 @@ func (d DomainResult) DaysUntilExpiry() int {
 	return int(time.Until(d.ExpirationTime).Hours() / 24)
 }
 
-// Expired reports whether the domain has already expired.
+// Expired returns true if the domain is already expired.
 func (d DomainResult) Expired() bool {
+
 	if d.ExpirationTime.IsZero() {
 		return false
 	}
@@ -64,12 +80,26 @@ func (d DomainResult) Expired() bool {
 	return time.Now().After(d.ExpirationTime)
 }
 
-// HasTLS reports whether a valid TLS certificate was collected.
+// HasTLS indicates whether TLS information was successfully collected.
 func (d DomainResult) HasTLS() bool {
+
 	return d.TLSSuccess && !d.TLSExpiryTime.IsZero()
 }
 
-// HasRDAP reports whether RDAP lookup succeeded.
+// HasExpiration indicates whether an expiration date is available.
+func (d DomainResult) HasExpiration() bool {
+
+	return !d.ExpirationTime.IsZero()
+}
+
+// HasRDAP indicates whether RDAP lookup succeeded.
 func (d DomainResult) HasRDAP() bool {
-	return d.RDAPSuccess && !d.ExpirationTime.IsZero()
+
+	return d.RDAPSuccess
+}
+
+// HasWHOIS indicates whether WHOIS lookup succeeded.
+func (d DomainResult) HasWHOIS() bool {
+
+	return d.WHOISSuccess
 }

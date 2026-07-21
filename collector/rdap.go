@@ -34,8 +34,8 @@ type rdapEvent struct {
 // -----------------------------------------------------------------------------
 
 type RDAPClient struct {
-	http          *internal.Client
-	bootstrapURL  string
+	http           *internal.Client
+	bootstrapURL   string
 	bootstrapCache map[string]string
 }
 

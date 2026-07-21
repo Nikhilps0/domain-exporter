@@ -22,6 +22,8 @@ FROM alpine:3.21
 
 RUN apk add --no-cache ca-certificates tzdata
 
+RUN apk add --no-cache whois
+
 RUN addgroup -S exporter && \
     adduser -S exporter -G exporter
 
